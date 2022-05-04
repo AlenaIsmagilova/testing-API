@@ -1,0 +1,23 @@
+.form {
+  display: none;
+}
+
+.form-add {
+  display: none;
+}
+
+.form_opened {
+  display: block;
+}
+
+.button__edit_inactive {
+  display: none;
+}
+
+.button__delete_inactive {
+  display: none;
+}
+
+.form-add__button-add_inactive {
+  display: none;
+}
