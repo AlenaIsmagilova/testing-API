@@ -10,6 +10,10 @@ const deleteNoteButton = document.querySelector(".button__delete");
 const addNewNoteButton = document.querySelector(".form-add__button-add");
 const inputTitleAddNewNote = document.querySelector("#inputTitleAddNewNote");
 const inputTextAddNewNote = document.querySelector("#inputTextAddNewNote");
+const addNewNoteForm = document.querySelector(".form-add");
+const cancelAddNewNoteFormButton = document.querySelector(
+  ".form-add__button-cancel"
+);
 
 function checkResponse(res) {
   if (res.ok) {
@@ -72,7 +76,6 @@ function createNote(title, text, noteId) {
   const noteEditTextInput = noteElement.querySelector("#inputEditedText");
   const form = noteElement.querySelector(".form");
   const cancelButton = noteElement.querySelector(".button__cancel");
-  const addNewNoteForm = document.querySelector(".form-add");
   noteTitle.textContent = title;
   noteText.textContent = text;
   deleteButton.addEventListener("click", function () {
@@ -114,26 +117,35 @@ function createNote(title, text, noteId) {
     editNoteButton.classList.remove("button__edit_inactive");
     deleteNoteButton.classList.remove("button__delete_inactive");
   });
-  //добавление новой заметки
-  function handleAddFormSubmit(evt) {
-    evt.preventDefault();
-    addNewNote({
-      title: inputTitleAddNewNote.value,
-      text: inputTextAddNewNote.value,
-    }).then((data) => {
-      const newNote = createNote(data.title, data.text, data.id);
-      notesList.prepend(newNote);
-      inputTitleAddNewNote.value = "";
-      inputTextAddNewNote.value = "";
-      addNewNoteForm.classList.remove("form_opened");
-      addNewNoteButton.classList.remove("form-add__button-add_inactive");
-    });
-  }
-  addNewNoteForm.addEventListener("submit", handleAddFormSubmit);
+
   //открытие формы добавления новой заметки
   addNewNoteButton.addEventListener("click", function () {
     addNewNoteForm.classList.add("form_opened");
     addNewNoteButton.classList.add("form-add__button-add_inactive");
   });
+
+  // закрытие формы добавления новой заметки без сохранения изменений
+  cancelAddNewNoteFormButton.addEventListener("click", function () {
+    addNewNoteForm.classList.remove("form_opened");
+    addNewNoteButton.classList.remove("form-add__button-add_inactive");
+  });
   return noteElement;
 }
+
+//добавление новой заметки
+function handleAddFormSubmit(evt) {
+  evt.preventDefault();
+  addNewNote({
+    title: inputTitleAddNewNote.value,
+    text: inputTextAddNewNote.value,
+  }).then((data) => {
+    const newNote = createNote(data.title, data.text, data.id);
+    notesList.prepend(newNote);
+    inputTitleAddNewNote.value = "";
+    inputTextAddNewNote.value = "";
+    addNewNoteForm.classList.remove("form_opened");
+    addNewNoteButton.classList.remove("form-add__button-add_inactive");
+  });
+}
+
+addNewNoteForm.addEventListener("submit", handleAddFormSubmit);
